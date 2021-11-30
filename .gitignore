@@ -1,0 +1,13 @@
+.gradle/
+.idea/
+/build
+.DS_Store
+*.iml
+*.ipr
+*.iws
+*/out
+out/
+node_modules/
+dump.rdb
+nohup.out
+*/.gitkeep
