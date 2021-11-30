@@ -14,12 +14,13 @@ configurations {
 	}
 }
 
-ext {
-	set('springCloudVersion', "Hoxton.SR1")
-}
-
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+	set('springCloudVersion', "2021.0.0-RC1")
 }
 
 dependencies {
