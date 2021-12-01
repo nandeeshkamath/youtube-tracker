@@ -10,12 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrackerController {
 
     @GetMapping("/")
-    public String entryPoint() {
-        return "Hello world";
-    }
-
-    @PostMapping("/hello")
-    public ResponseEntity<String> hello() {
+    public ResponseEntity<String> entryPoint() {
         return ResponseEntity.status(HttpStatus.OK).body("HELLO WELCOME TO YOUTUBE TRACKER");
     }
 }
