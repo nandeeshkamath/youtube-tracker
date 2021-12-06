@@ -17,7 +17,7 @@ public class YouTubeTrackerApplication {
     private final TelegramBotService telegramBotService;
     private final YouTubeTrackerService youTubeTrackerService;
 
-    private void getChannels(){
+    public void trackChannels(){
         //todo
     }
 }
