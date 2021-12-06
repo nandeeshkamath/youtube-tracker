@@ -16,7 +16,7 @@ public class YouTubeTrackerService {
     @Value("${youtube.api-key}")
     private String apiKey;
 
-    public ResponseEntity<YoutubeSearchResponse> getChannels(@NotBlank String part, @NotBlank String id) {
-        return feign.getChannels(part, id, apiKey);
+    public ResponseEntity<YoutubeSearchResponse> getChannels(@NotBlank String part, @NotBlank String channelId) {
+        return feign.getChannels(part, channelId, apiKey);
     }
 }
