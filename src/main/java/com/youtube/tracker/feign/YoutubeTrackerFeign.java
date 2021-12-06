@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface YoutubeTrackerFeign {
 
     @GetMapping("/v3/search")
-    ResponseEntity<YoutubeSearchResponse> getChannels(@RequestParam String part, @RequestParam String id, @RequestParam String key);
+    ResponseEntity<YoutubeSearchResponse> getChannels(@RequestParam String part, @RequestParam String channelId, @RequestParam String key, @RequestParam("q") String keyword);
 }
