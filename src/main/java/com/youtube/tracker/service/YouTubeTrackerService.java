@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,10 @@ public class YouTubeTrackerService {
     @Value("${youtube.api-key}")
     private String apiKey;
 
-    public ResponseEntity<YoutubeSearchResponse> getChannels(@NotBlank String part, @NotBlank String channelId, @NotBlank String keyword) {
-        return feign.getChannels(part, channelId, apiKey, keyword);
+    @Value("#{'${youtube.api-channel-ids}'.split(',')}")
+    private List<String> channels;
+
+    public ResponseEntity<YoutubeSearchResponse> getChannels(@NotBlank String part, @NotBlank String channels, @NotBlank String keyword) {
+        return feign.getChannels(part, channels, apiKey, keyword);
     }
 }
