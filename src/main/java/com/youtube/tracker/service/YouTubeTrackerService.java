@@ -20,7 +20,7 @@ public class YouTubeTrackerService {
     @Value("#{'${youtube.api-channel-ids}'.split(',')}")
     private List<String> channels;
 
-    public ResponseEntity<YoutubeSearchResponse> getChannels(@NotBlank String part, @NotBlank String channels, @NotBlank String keyword) {
-        return feign.getChannels(part, channels, apiKey, keyword);
+    public ResponseEntity<YoutubeSearchResponse> search(@NotBlank String part, @NotBlank String channels, @NotBlank String keyword) {
+        return feign.search(part, channels, apiKey, keyword);
     }
 }
