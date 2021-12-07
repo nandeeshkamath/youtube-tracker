@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableFeignClients
 public class TrackerApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(TrackerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TrackerApplication.class, args);
+    }
 }

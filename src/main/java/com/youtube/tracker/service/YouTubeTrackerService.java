@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -21,6 +23,6 @@ public class YouTubeTrackerService {
     private List<String> channels;
 
     public ResponseEntity<YoutubeSearchResponse> search(@NotBlank String part, @NotBlank String channels, @NotBlank String keyword) {
-        return feign.search(part, channels, apiKey, keyword);
+        return feign.search(part, channels, apiKey, keyword, DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
     }
 }
