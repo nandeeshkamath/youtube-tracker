@@ -17,10 +17,10 @@ public class AsyncConfiguration {
 
     private ThreadPoolTaskExecutor createThreadPoolExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(25);
-        executor.setMaxPoolSize(25);
-        executor.setQueueCapacity(210);
-        executor.setKeepAliveSeconds(60);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(5);
+        executor.setQueueCapacity(5);
+        executor.setKeepAliveSeconds(30);
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setThreadNamePrefix("AYSNC-");
         executor.initialize();
