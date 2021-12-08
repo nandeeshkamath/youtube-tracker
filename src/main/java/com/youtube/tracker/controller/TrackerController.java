@@ -26,11 +26,4 @@ public class TrackerController {
         application.trackChannels();
         return ResponseWrapper.success();
     }
-
-    @PostMapping("/send/message")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseWrapper sendMessage() {
-        application.sendMessage("hii");
-        return ResponseWrapper.success();
-    }
 }

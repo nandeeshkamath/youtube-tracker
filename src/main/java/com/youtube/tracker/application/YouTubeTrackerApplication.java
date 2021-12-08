@@ -19,10 +19,6 @@ public class YouTubeTrackerApplication {
 
     @Async("asyncExecutor")
     public void trackChannels() {
-        System.out.println("Execute method asynchronously. " + Thread.currentThread().getName());
-    }
-
-    public void sendMessage(String msg) {
-        telegramBotService.sendMessage(msg);
+        telegramBotService.sendMessage("Hii You nandeesh");
     }
 }
