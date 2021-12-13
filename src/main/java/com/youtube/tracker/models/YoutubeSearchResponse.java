@@ -18,20 +18,20 @@ public class YoutubeSearchResponse {
     public static class Item {
         String kind;
         String etag;
-        ID id;
+        Id id;
         Snippet snippet;
     }
 
     @Value
-    public static class ID {
+    public static class Id {
         String kind;
-        String videoID;
+        String videoId;
     }
 
     @Value
     public static class Snippet {
         OffsetDateTime publishedAt;
-        String channelID;
+        String channelId;
         String title;
         String description;
         Thumbnails thumbnails;
