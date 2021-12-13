@@ -3,7 +3,7 @@ name: Deployment to stg
 on:
   push:
     branches:
-      - main
+      - production
 jobs:
   deploy:
     runs-on: ubuntu-latest
