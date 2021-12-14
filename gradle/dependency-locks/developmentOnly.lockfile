@@ -1,0 +1,12 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+org.springframework.boot:spring-boot-autoconfigure:2.6.0
+org.springframework.boot:spring-boot-devtools:2.6.0
+org.springframework.boot:spring-boot:2.6.0
+org.springframework:spring-aop:5.3.13
+org.springframework:spring-beans:5.3.13
+org.springframework:spring-context:5.3.13
+org.springframework:spring-core:5.3.13
+org.springframework:spring-expression:5.3.13
+org.springframework:spring-jcl:5.3.13
