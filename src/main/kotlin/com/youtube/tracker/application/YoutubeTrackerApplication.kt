@@ -39,10 +39,10 @@ class YoutubeTrackerApplication(
                 item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
             }?.forEach { link ->
                 log.info("Sending message to telegram with body : $link")
-//                telegramService.sendMessage(
-//                    link,
-//                    request.targetChannel
-//                )
+                telegramService.sendMessage(
+                    link,
+                    request.targetChannel
+                )
             }
         }
     }
