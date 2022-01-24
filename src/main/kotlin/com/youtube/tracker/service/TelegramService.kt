@@ -1,5 +1,5 @@
 package com.youtube.tracker.service
-import com.youtube.tracker.feign.TelegramBotFeign
+import com.youtube.tracker.feign.TelegramFeign
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 class TelegramService(
     @Value("\${telegram-api.channel-id}")
     private val defaultTargetChannel: String,
-    private val feign: TelegramBotFeign
+    private val feign: TelegramFeign
 ) {
     fun sendMessage(message: String, targetChannel: String?) {
         val finalTargetChannel = targetChannel ?: defaultTargetChannel

@@ -30,7 +30,8 @@ class YoutubeTrackerApplication(
                 request.type,
                 channel,
                 keyword,
-                publishedAfter
+                publishedAfter,
+                request.resultType
             )
             log.info("Response received from youtube: ${response?.items}")
             response?.items?.filter { item ->

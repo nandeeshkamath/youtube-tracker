@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.http.ResponseEntity
 
 // TODO: Add Configuration for server/client errors
-@FeignClient(value = "telegram-bot-feign", url = "\${telegram-api.base-url}")
-interface TelegramBotFeign {
+@FeignClient(value = "telegram-feign", url = "\${telegram-api.base-url}")
+interface TelegramFeign {
     @GetMapping("/sendMessage")
     fun sendMessageToChannel(@RequestParam("chat_id") chatId: String, @RequestParam text: String): ResponseEntity<*>?
 }
