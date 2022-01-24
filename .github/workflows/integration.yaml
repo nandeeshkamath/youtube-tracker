@@ -22,3 +22,7 @@ jobs:
         run: ./gradlew build -x test
       - name: Test
         run: ./gradlew test
+      - uses: actions/upload-artifact@v2
+        with:
+          name: junit-test-results
+          path: build/reports/tests/test/
