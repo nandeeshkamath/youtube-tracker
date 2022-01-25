@@ -1,0 +1,18 @@
+name: Trailer Tracker
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+#    - cron: '0 */4 * * *'
+
+jobs:
+  track-trailers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Track trailers
+        env:
+          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
+        if: env.SECRET_TOKEN != null
+        run: |
+          sh .github/workflows/tracker-scripts/trailer-tracker.sh

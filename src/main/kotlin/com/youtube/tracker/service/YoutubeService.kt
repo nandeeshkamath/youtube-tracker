@@ -17,6 +17,6 @@ class YoutubeService(
         keyword: String, publishedAfter: String,
         resultType: ResultType
     ) = feign.search(
-        keyword, channel, part.value, apiKey, publishedAfter, resultType.value
+        keyword, channel, part.value, apiKey, publishedAfter, resultType.value, 50
     ).body
 }

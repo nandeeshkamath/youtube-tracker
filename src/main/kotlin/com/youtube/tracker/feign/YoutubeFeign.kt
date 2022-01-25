@@ -12,6 +12,6 @@ interface YoutubeFeign {
     fun search(
         @RequestParam("q") keyword: String, @RequestParam channelId: String,
         @RequestParam part: String, @RequestParam key: String, @RequestParam publishedAfter: String,
-        @RequestParam("type") videoType: String
+        @RequestParam("type") videoType: String, @RequestParam maxResults: Int
     ): ResponseEntity<YoutubeSearchResponse>
 }
