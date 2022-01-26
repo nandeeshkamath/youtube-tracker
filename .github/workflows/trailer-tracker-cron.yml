@@ -12,6 +12,7 @@ jobs:
       - name: Track trailers
         env:
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
         if: env.SECRET_TOKEN != null
         run: |
           sh .github/workflows/tracker-scripts/trailer-tracker.sh

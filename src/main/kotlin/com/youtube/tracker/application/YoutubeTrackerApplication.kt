@@ -1,5 +1,6 @@
 package com.youtube.tracker.application
 
+import com.youtube.tracker.enums.PartType
 import com.youtube.tracker.models.YoutubeLink
 import com.youtube.tracker.models.request.TrackerRequest
 import com.youtube.tracker.service.TelegramService
@@ -27,7 +28,7 @@ class YoutubeTrackerApplication(
         )
         request.channels.forEach { channel ->
             val response = youtubeService.search(
-                request.type,
+                PartType.SNIPPET,
                 channel,
                 keywords,
                 publishedAfter,
