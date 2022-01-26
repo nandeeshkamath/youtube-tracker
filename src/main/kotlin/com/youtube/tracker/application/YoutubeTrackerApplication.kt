@@ -21,7 +21,7 @@ class YoutubeTrackerApplication(
 ) {
     @Async("asyncExecutor")
     fun track(request: TrackerRequest) {
-        val keyword = request.keyword
+        val keywords = request.keywords.joinToString(",")
         val publishedAfter = INSTANT_ISO_FORMATTER.format(
             Instant.now().minus(request.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
         )
@@ -29,13 +29,19 @@ class YoutubeTrackerApplication(
             val response = youtubeService.search(
                 request.type,
                 channel,
-                keyword,
+                keywords,
                 publishedAfter,
                 request.resultType
             )
             log.info("Response received from youtube: ${response?.items}")
             response?.items?.filter { item ->
-                item.snippet?.title?.lowercase()?.contains(keyword) ?: false
+                val videoTitle = item.snippet?.title?.lowercase()
+                request.keywords.forEach { keyword ->
+                    if (videoTitle?.contains(keyword) == true) {
+                        return@filter true
+                    }
+                }
+                return@filter false
             }?.mapNotNull { item ->
                 item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
             }?.forEach { link ->

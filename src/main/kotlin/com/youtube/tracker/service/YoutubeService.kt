@@ -17,6 +17,11 @@ class YoutubeService(
         keyword: String, publishedAfter: String,
         resultType: ResultType
     ) = feign.search(
-        keyword, channel, part.value, apiKey, publishedAfter, resultType.value, 50
+        keyword, channel, part.value, apiKey, publishedAfter, resultType.value, MAX_RESULTS, DATE_ORDER
     ).body
+
+    companion object {
+        private const val MAX_RESULTS = 50
+        private const val DATE_ORDER = "date"
+    }
 }

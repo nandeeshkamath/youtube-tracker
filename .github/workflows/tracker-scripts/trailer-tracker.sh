@@ -18,7 +18,11 @@ curl --location --request POST "$DOMAIN/track" \
 --header "Authorization: Basic $SECRET_TOKEN" \
 --header 'Content-Type: application/json' \
 --data-raw "{
-    \"keyword\": \"trailer\",
+    \"keywords\": [
+      \"trailer\",
+      \"teaser\",
+      \"first look\"
+    ],
     \"interval\": 4,
     \"channels\": [
         \"$NETFLIX\",
