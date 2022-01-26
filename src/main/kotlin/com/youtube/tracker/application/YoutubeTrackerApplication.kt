@@ -1,5 +1,6 @@
 package com.youtube.tracker.application
 
+import com.youtube.tracker.enums.PartType
 import com.youtube.tracker.models.YoutubeLink
 import com.youtube.tracker.models.request.TrackerRequest
 import com.youtube.tracker.service.TelegramService
@@ -21,20 +22,27 @@ class YoutubeTrackerApplication(
 ) {
     @Async("asyncExecutor")
     fun track(request: TrackerRequest) {
-        val keyword = request.keyword
+        val keywords = request.keywords.joinToString(",")
         val publishedAfter = INSTANT_ISO_FORMATTER.format(
             Instant.now().minus(request.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
         )
         request.channels.forEach { channel ->
             val response = youtubeService.search(
-                request.type,
+                PartType.SNIPPET,
                 channel,
-                keyword,
-                publishedAfter
+                keywords,
+                publishedAfter,
+                request.resultType
             )
             log.info("Response received from youtube: ${response?.items}")
             response?.items?.filter { item ->
-                item.snippet?.title?.lowercase()?.contains(keyword) ?: false
+                val videoTitle = item.snippet?.title?.lowercase()
+                request.keywords.forEach { keyword ->
+                    if (videoTitle?.contains(keyword) == true) {
+                        return@filter true
+                    }
+                }
+                return@filter false
             }?.mapNotNull { item ->
                 item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
             }?.forEach { link ->
