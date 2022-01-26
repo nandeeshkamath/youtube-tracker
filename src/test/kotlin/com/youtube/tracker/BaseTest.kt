@@ -54,11 +54,15 @@ class BaseTest {
     protected fun stubTrackerRequest() =
         """
             {
-                "keyword": "trailer",
-                "interval": 72,
-                "channels": [
-                    "UCKy1dAqELo0zrOtPkf0eTMw"
-                ]
+              "keywords": [
+                "trailer",
+                "teaser",
+                "first look"
+              ],
+              "interval": 72,
+              "channels": [
+                "UCKy1dAqELo0zrOtPkf0eTMw"
+              ]
             }
         """.trimIndent()
 
