@@ -13,11 +13,11 @@ class YoutubeService(
     private val feign: YoutubeFeign
 ) {
     fun search(
-        part: PartType, channel: String,
-        keyword: String, publishedAfter: String,
+        part: PartType = PartType.SNIPPET, channel: String,
+        keywords: String, publishedAfter: String,
         resultType: ResultType
     ) = feign.search(
-        keyword = keyword,
+        keyword = keywords,
         channelId = channel,
         part = part.value,
         key = apiKey,

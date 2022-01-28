@@ -36,6 +36,7 @@ class BaseTest {
     fun setUp() {
         stubYoutubeSearch()
         stubTelegramSendMessage()
+        stubTelegramGetChatInfo()
     }
 
     @AfterEach
@@ -60,6 +61,7 @@ class BaseTest {
                 "first look"
               ],
               "interval": 72,
+              "targetChannel": "@trailertracker",
               "channels": [
                 "UCKy1dAqELo0zrOtPkf0eTMw"
               ]
@@ -75,6 +77,11 @@ class BaseTest {
         response: ResponseDefinitionBuilder = telegramSendMessageSuccessJson()
     ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/sendMessage*")).willReturn(response))
+
+    protected fun stubTelegramGetChatInfo(
+        response: ResponseDefinitionBuilder = telegramGetChatSuccessJson()
+    ): StubMapping =
+        WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/getChat*")).willReturn(response))
 
     protected fun youtubeSearchSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
@@ -188,6 +195,39 @@ class BaseTest {
                 			"type": "url"
                 		}]
                 	}
+                }
+            """.trimIndent()
+        )
+
+    protected fun telegramGetChatSuccessJson(): ResponseDefinitionBuilder =
+        WireMock.okJson(
+            """
+                {
+                    "ok": true,
+                    "result": {
+                        "id": -1001272838479,
+                        "title": "Trailer tracker",
+                        "username": "trailertracker",
+                        "type": "channel",
+                        "description": "Tracks trailers regularly. Owned by: @nandeeshkamath",
+                        "photo": {
+                            "small_file_id": "AQADBQAD7K4xG2A2mFcACAIAA7H2fN8W____VvdPsiMv0PkjBA",
+                            "small_file_unique_id": "AQAD7K4xG2A2mFcAAQ",
+                            "big_file_id": "AQADBQAD7K4xG2A2mFcACAMAA7H2fN8W____VvdPsiMv0PkjBA",
+                            "big_file_unique_id": "AQAD7K4xG2A2mFcB"
+                        }
+                    }
+                }
+            """.trimIndent()
+        )
+
+    protected fun telegramGetChatNotFoundJson(): ResponseDefinitionBuilder =
+        WireMock.status(400).withBody(
+            """
+                {
+                    "ok": false,
+                    "error_code": 400,
+                    "description": "Bad Request: chat not found"
                 }
             """.trimIndent()
         )

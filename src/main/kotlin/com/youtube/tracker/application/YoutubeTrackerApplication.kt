@@ -1,7 +1,8 @@
 package com.youtube.tracker.application
 
-import com.youtube.tracker.enums.PartType
+import com.youtube.tracker.models.response.Item
 import com.youtube.tracker.models.YoutubeLink
+import com.youtube.tracker.models.response.YoutubeSearchResponse
 import com.youtube.tracker.models.request.TrackerRequest
 import com.youtube.tracker.service.TelegramService
 import com.youtube.tracker.service.YoutubeService
@@ -22,38 +23,55 @@ class YoutubeTrackerApplication(
 ) {
     @Async("asyncExecutor")
     fun track(request: TrackerRequest) {
-        val keywords = request.keywords.joinToString(" ")
-        val publishedAfter = INSTANT_ISO_FORMATTER.format(
-            Instant.now().minus(request.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
-        )
+        val keywords = request.concatenateKeywords()
+        val publishedAfter = request.publishedAfter()
+
         request.channels.forEach { channel ->
-            val response = youtubeService.search(
-                PartType.SNIPPET,
-                channel,
-                keywords,
-                publishedAfter,
-                request.resultType
+            val searchResults = youtubeService.search(
+                channel = channel,
+                keywords = keywords,
+                publishedAfter = publishedAfter,
+                resultType = request.resultType
             )
-            log.info("Response received from youtube: ${response?.items}")
-            response?.items?.filter { item ->
-                val videoTitle = item.snippet?.title?.lowercase()
-                request.keywords.forEach { keyword ->
-                    if (videoTitle?.contains(keyword) == true) {
-                        return@filter true
-                    }
-                }
-                return@filter false
-            }?.mapNotNull { item ->
-                item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
-            }?.forEach { link ->
-                log.info("Sending message to telegram with body : $link")
-                telegramService.sendMessage(
-                    link,
-                    request.targetChannel
-                )
-            }
+            searchResults
+                .filterByKeyword(request.keywords)
+                .generateLinks()
+                .send(request.targetChannel)
         }
     }
+
+    internal fun YoutubeSearchResponse?.filterByKeyword(keywords: Set<String>): List<Item> =
+        this?.items?.filter { item ->
+            val videoTitle = item.snippet?.title?.lowercase()
+            keywords.forEach { keyword ->
+                if (videoTitle?.contains(keyword) == true) {
+                    return@filter true
+                }
+            }
+            return@filter false
+        } ?: emptyList()
+
+    internal fun List<Item>.generateLinks() =
+        this.mapNotNull { item ->
+            item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
+        }
+
+    internal fun List<String>.send(targetChannel: String?) =
+        this.forEach { link ->
+            log.info("Sending message to telegram with body : $link")
+            telegramService.sendMessage(
+                link,
+                targetChannel
+            )
+        }
+
+    internal fun TrackerRequest.concatenateKeywords(separator: String = " ") =
+        this.keywords.joinToString { separator }
+
+    internal fun TrackerRequest.publishedAfter() =
+        INSTANT_ISO_FORMATTER.format(
+            Instant.now().minus(this.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
+        )
 
     companion object {
         private val log = loggerFor(YoutubeTrackerApplication::class)

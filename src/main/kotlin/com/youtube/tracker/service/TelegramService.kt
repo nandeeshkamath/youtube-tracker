@@ -13,4 +13,8 @@ class TelegramService(
         val finalTargetChannel = targetChannel ?: defaultTargetChannel
         feign.sendMessageToChannel(finalTargetChannel, message)
     }
+
+    companion object {
+        private const val CHAT_NOT_FOUND = "Bad Request: chat not found"
+    }
 }
