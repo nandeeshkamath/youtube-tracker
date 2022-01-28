@@ -13,6 +13,6 @@ interface YoutubeFeign {
         @RequestParam("q") keyword: String, @RequestParam channelId: String,
         @RequestParam part: String, @RequestParam key: String, @RequestParam publishedAfter: String,
         @RequestParam("type") videoType: String, @RequestParam maxResults: Int,
-        @RequestParam order: String
+        @RequestParam order: String, @RequestParam regionCode: String
     ): ResponseEntity<YoutubeSearchResponse>
 }

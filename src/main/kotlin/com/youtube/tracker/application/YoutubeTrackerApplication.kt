@@ -22,7 +22,7 @@ class YoutubeTrackerApplication(
 ) {
     @Async("asyncExecutor")
     fun track(request: TrackerRequest) {
-        val keywords = request.keywords.joinToString(",")
+        val keywords = request.keywords.joinToString(" ")
         val publishedAfter = INSTANT_ISO_FORMATTER.format(
             Instant.now().minus(request.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
         )
