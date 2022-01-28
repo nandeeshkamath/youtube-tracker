@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DOMAIN=https://youtube-tracker-production.up.railway.app
+# Youtube Channel IDs
 
 NETFLIX=UCWOA1ZGywLbqmigxE4Qlvuw
 NETFLIX_INDIA=UCZSNzBgFub_WWil6TOTYwAg
@@ -14,11 +14,15 @@ WBBROS=UCjmJDM5pRKbUlVIzDYYWb6g
 SONYLIV=UCOQNJjhXwvAScuELTT_i7cQ
 ZEE_MUSIC=UCFFbwnve3yF62-tVXkTyHqg
 
-curl --location --request POST "$DOMAIN/track" \
+curl --location --request POST "$DOMAIN_URL/track" \
 --header "Authorization: Basic $SECRET_TOKEN" \
 --header 'Content-Type: application/json' \
 --data-raw "{
-    \"keyword\": \"trailer\",
+    \"keywords\": [
+      \"trailer\",
+      \"teaser\",
+      \"first look\"
+    ],
     \"interval\": 4,
     \"channels\": [
         \"$NETFLIX\",
