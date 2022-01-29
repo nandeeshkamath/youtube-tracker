@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.lang.Exception
 
-// TODO: Add Configuration for server/client errors
 @FeignClient(
     value = "telegram-feign",
     url = "\${telegram-api.base-url}",
@@ -31,19 +29,19 @@ interface TelegramFeign {
 }
 
 @Component
-class TelegramFeignErrorDecoder(private val mapper: ObjectMapper): ErrorDecoder {
+class TelegramFeignErrorDecoder(private val mapper: ObjectMapper) : ErrorDecoder {
     override fun decode(methodKey: String?, response: Response?): Exception {
         if (response == null) {
             throw InvalidException("No response from telegram API")
         }
         when (response.status()) {
-            in 400..499 ->
+            in clientError ->
                 throw ClientException(
                     response.status(),
                     ResultInfoConstants.BAD_REQUEST,
                     mapper.readValue(response.body()?.asInputStream(), TelegramErrorResponse::class.java).description
                 )
-            in 500..599 ->
+            in serverError ->
                 throw ServerException(
                     response.status(),
                     ResultInfoConstants.SERVER_ERROR,
@@ -54,4 +52,8 @@ class TelegramFeignErrorDecoder(private val mapper: ObjectMapper): ErrorDecoder 
         }
     }
 
+    companion object {
+        private val clientError = 400..499
+        private val serverError = 500..599
+    }
 }

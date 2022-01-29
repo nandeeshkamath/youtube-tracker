@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
-import java.util.*
 
 @SpringBootTest(properties = ["spring.profiles.active=test"])
 @AutoConfigureMockMvc
@@ -23,14 +22,15 @@ class BaseTest {
 
     @Value("\${spring.security.user.name}")
     private lateinit var defaultUserName: String
+
     @Value("\${spring.security.user.password}")
     private lateinit var defaultUserPassword: String
 
     @Autowired
-    protected lateinit var wireMockServer: WireMockServer
+    internal lateinit var wireMockServer: WireMockServer
 
     @Autowired
-    protected lateinit var mockMvc: MockMvc
+    internal lateinit var mockMvc: MockMvc
 
     @BeforeEach
     fun setUp() {
@@ -44,15 +44,11 @@ class BaseTest {
         wireMockServer.resetAll()
     }
 
-    protected val basicAuth by lazy { SecurityMockMvcRequestPostProcessors.httpBasic(defaultUserName, defaultUserPassword) }
+    internal val basicAuth by lazy {
+        SecurityMockMvcRequestPostProcessors.httpBasic(defaultUserName, defaultUserPassword)
+    }
 
-    protected val stubAuth: Pair<String, String>
-        get() = "$defaultUserName:$defaultUserPassword".let {
-            println("response : ${"Authorization" to "Basic ${Base64.getEncoder().encode(it.toByteArray())}"}")
-            "Authorization" to "Basic ${Base64.getEncoder().encode(it.toByteArray())}"
-        }
-
-    protected fun stubTrackerRequest() =
+    internal fun stubTrackerRequest() =
         """
             {
               "keywords": [
@@ -68,22 +64,23 @@ class BaseTest {
             }
         """.trimIndent()
 
-    protected fun stubYoutubeSearch(
-        response: ResponseDefinitionBuilder = youtubeSearchSuccessJson())
-    : StubMapping =
+    internal fun stubYoutubeSearch(
+        response: ResponseDefinitionBuilder = youtubeSearchSuccessJson()
+    ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/v3/search*")).willReturn(response))
 
-    protected fun stubTelegramSendMessage(
+    internal fun stubTelegramSendMessage(
         response: ResponseDefinitionBuilder = telegramSendMessageSuccessJson()
     ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/sendMessage*")).willReturn(response))
 
-    protected fun stubTelegramGetChatInfo(
+    internal fun stubTelegramGetChatInfo(
         response: ResponseDefinitionBuilder = telegramGetChatSuccessJson()
     ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/getChat*")).willReturn(response))
 
-    protected fun youtubeSearchSuccessJson(): ResponseDefinitionBuilder =
+    @Suppress("LongMethod", "MaxLineLength")
+    internal fun youtubeSearchSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
             """
                 {
@@ -168,7 +165,7 @@ class BaseTest {
             """.trimIndent()
         )
 
-    protected fun telegramSendMessageSuccessJson(): ResponseDefinitionBuilder =
+    internal fun telegramSendMessageSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
             """
                 {
@@ -199,7 +196,7 @@ class BaseTest {
             """.trimIndent()
         )
 
-    protected fun telegramGetChatSuccessJson(): ResponseDefinitionBuilder =
+    internal fun telegramGetChatSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
             """
                 {
@@ -221,7 +218,7 @@ class BaseTest {
             """.trimIndent()
         )
 
-    protected fun telegramGetChatNotFoundJson(): ResponseDefinitionBuilder =
+    internal fun telegramGetChatNotFoundJson(): ResponseDefinitionBuilder =
         WireMock.status(400).withBody(
             """
                 {

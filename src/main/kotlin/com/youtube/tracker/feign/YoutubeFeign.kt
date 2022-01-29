@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @FeignClient(value = "youtube-feign", url = "\${youtube-api.base-url}")
 interface YoutubeFeign {
+    @Suppress("LongParameterList")
     @GetMapping("/v3/search")
     fun search(
-        @RequestParam("q") keyword: String, @RequestParam channelId: String,
-        @RequestParam part: String, @RequestParam key: String, @RequestParam publishedAfter: String,
-        @RequestParam("type") videoType: String, @RequestParam maxResults: Int,
-        @RequestParam order: String, @RequestParam regionCode: String
+        @RequestParam("q") keyword: String,
+        @RequestParam channelId: String,
+        @RequestParam part: String,
+        @RequestParam key: String,
+        @RequestParam publishedAfter: String,
+        @RequestParam("type") videoType: String,
+        @RequestParam maxResults: Int,
+        @RequestParam order: String,
+        @RequestParam regionCode: String
     ): ResponseEntity<YoutubeSearchResponse>
 }

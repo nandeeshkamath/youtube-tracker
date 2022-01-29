@@ -6,7 +6,11 @@ import com.youtube.tracker.models.request.TrackerRequest
 import com.youtube.tracker.util.loggerFor
 import com.youtube.tracker.validations.Validator
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
@@ -17,7 +21,7 @@ class TrackerController(
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
-    fun entryPoint() = "HELLO WELCOME TO YOUTUBE TRACKER"
+    fun entryPoint() = homeMessage
 
     @PostMapping("/track")
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -33,5 +37,6 @@ class TrackerController(
 
     companion object {
         private val log = loggerFor(TrackerController::class)
+        private const val homeMessage = "HELLO WELCOME TO YOUTUBE TRACKER"
     }
 }

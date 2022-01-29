@@ -13,6 +13,7 @@ class TrackerApplication {
     fun globalClock() = Clock.systemUTC()
 }
 
+@Suppress("SpreadOperator")
 fun main(args: Array<String>) {
     runApplication<TrackerApplication>(*args)
 }
