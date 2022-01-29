@@ -28,20 +28,20 @@ class TrackerControllerTest : BaseTest() {
         assertTelegramSendMessageCall(2)
     }
 
-//    @Test
-//    fun `given track request when channel not found then bad request`() {
-//        stubTelegramGetChatInfo(telegramGetChatNotFoundJson())
-//        val response = mockMvc.perform(
-//            MockMvcRequestBuilders.post("/track")
-//                .content(stubTrackerRequest())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .with(basicAuth))
-//            .andExpect(MockMvcResultMatchers.status().isAccepted)
-//            .andReturn().response.contentAsString
-//
-//        compareJson(ExpectedResponses.success, response)
-//        assertTelegramGetChannelInfo()
-//        assertYoutubeSearchCall(0)
-//        assertTelegramSendMessageCall(0)
-//    }
+    @Test
+    fun `given track request when channel not found then bad request`() {
+        stubTelegramGetChatInfo(telegramGetChatNotFoundJson())
+        val response = mockMvc.perform(
+            MockMvcRequestBuilders.post("/track")
+                .content(stubTrackerRequest())
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(basicAuth))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andReturn().response.contentAsString
+
+        compareJson(ExpectedResponses.chatNotFound, response)
+        assertTelegramGetChannelInfo()
+        assertYoutubeSearchCall(0)
+        assertTelegramSendMessageCall(0)
+    }
 }

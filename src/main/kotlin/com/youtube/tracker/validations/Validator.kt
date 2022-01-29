@@ -1,8 +1,7 @@
 package com.youtube.tracker.validations
 
-import com.youtube.tracker.constants.ResultInfoConstants
-import com.youtube.tracker.exception.ClientException
 import com.youtube.tracker.feign.TelegramFeign
+import com.youtube.tracker.util.loggerFor
 import org.springframework.stereotype.Component
 
 @Component
@@ -10,9 +9,15 @@ class Validator(private val telegramFeign: TelegramFeign) {
 
     fun validateTargetChannel(channel: String?) {
         if (channel == null) return
-        val response = telegramFeign.getChannelInfo(channel)
-        if (!response.statusCode.is2xxSuccessful) {
-            throw ClientException(ResultInfoConstants.BAD_REQUEST, response.body?.description)
+        kotlin.runCatching {
+            telegramFeign.getChannelInfo(channel)
+        }.onFailure { exception ->
+            log.error("Failed to validate target channel: $channel", exception)
+            throw exception
         }
+    }
+
+    companion object {
+        private val log = loggerFor(Validator::class)
     }
 }
