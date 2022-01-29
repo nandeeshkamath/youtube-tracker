@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.youtube'
-version = '0.0.2-bugfix'
+version = '0.0.3'
 sourceCompatibility = '11'
 
 configurations {
