@@ -8,7 +8,6 @@ import org.awaitility.Awaitility
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.context.event.ContextClosedEvent
 import java.net.URL
 
 class WireMockServerInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -43,3 +42,4 @@ object HealthApi {
             .willReturn(WireMock.okJson("""{"status": "OK"}"""))
     )
 }
+

@@ -13,4 +13,16 @@ object ExpectedResponses {
               "data": null
             }
         """.trimIndent()
+
+    //language=JSON
+    val chatNotFound =
+        """
+            {
+              "resultInfo": {
+                "id": "001",
+                "message": "BAD_REQUEST"
+              },
+              "data": "Bad Request: chat not found"
+            }
+        """.trimIndent()
 }

@@ -20,8 +20,7 @@ curl --location --request POST "$DOMAIN_URL/track" \
 --data-raw "{
     \"keywords\": [
       \"trailer\",
-      \"teaser\",
-      \"first look\"
+      \"teaser\"
     ],
     \"interval\": 4,
     \"channels\": [

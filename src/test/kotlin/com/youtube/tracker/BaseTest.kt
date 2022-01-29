@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.web.servlet.MockMvc
-import java.util.*
 
 @SpringBootTest(properties = ["spring.profiles.active=test"])
 @AutoConfigureMockMvc
@@ -23,19 +22,21 @@ class BaseTest {
 
     @Value("\${spring.security.user.name}")
     private lateinit var defaultUserName: String
+
     @Value("\${spring.security.user.password}")
     private lateinit var defaultUserPassword: String
 
     @Autowired
-    protected lateinit var wireMockServer: WireMockServer
+    internal lateinit var wireMockServer: WireMockServer
 
     @Autowired
-    protected lateinit var mockMvc: MockMvc
+    internal lateinit var mockMvc: MockMvc
 
     @BeforeEach
     fun setUp() {
         stubYoutubeSearch()
         stubTelegramSendMessage()
+        stubTelegramGetChatInfo()
     }
 
     @AfterEach
@@ -43,15 +44,11 @@ class BaseTest {
         wireMockServer.resetAll()
     }
 
-    protected val basicAuth by lazy { SecurityMockMvcRequestPostProcessors.httpBasic(defaultUserName, defaultUserPassword) }
+    internal val basicAuth by lazy {
+        SecurityMockMvcRequestPostProcessors.httpBasic(defaultUserName, defaultUserPassword)
+    }
 
-    protected val stubAuth: Pair<String, String>
-        get() = "$defaultUserName:$defaultUserPassword".let {
-            println("response : ${"Authorization" to "Basic ${Base64.getEncoder().encode(it.toByteArray())}"}")
-            "Authorization" to "Basic ${Base64.getEncoder().encode(it.toByteArray())}"
-        }
-
-    protected fun stubTrackerRequest() =
+    internal fun stubTrackerRequest() =
         """
             {
               "keywords": [
@@ -60,23 +57,30 @@ class BaseTest {
                 "first look"
               ],
               "interval": 72,
+              "targetChannel": "@trailertracker",
               "channels": [
                 "UCKy1dAqELo0zrOtPkf0eTMw"
               ]
             }
         """.trimIndent()
 
-    protected fun stubYoutubeSearch(
-        response: ResponseDefinitionBuilder = youtubeSearchSuccessJson())
-    : StubMapping =
+    internal fun stubYoutubeSearch(
+        response: ResponseDefinitionBuilder = youtubeSearchSuccessJson()
+    ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/v3/search*")).willReturn(response))
 
-    protected fun stubTelegramSendMessage(
+    internal fun stubTelegramSendMessage(
         response: ResponseDefinitionBuilder = telegramSendMessageSuccessJson()
     ): StubMapping =
         WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/sendMessage*")).willReturn(response))
 
-    protected fun youtubeSearchSuccessJson(): ResponseDefinitionBuilder =
+    internal fun stubTelegramGetChatInfo(
+        response: ResponseDefinitionBuilder = telegramGetChatSuccessJson()
+    ): StubMapping =
+        WireMock.stubFor(WireMock.get(WireMock.urlPathMatching("/getChat*")).willReturn(response))
+
+    @Suppress("LongMethod", "MaxLineLength")
+    internal fun youtubeSearchSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
             """
                 {
@@ -161,7 +165,7 @@ class BaseTest {
             """.trimIndent()
         )
 
-    protected fun telegramSendMessageSuccessJson(): ResponseDefinitionBuilder =
+    internal fun telegramSendMessageSuccessJson(): ResponseDefinitionBuilder =
         WireMock.okJson(
             """
                 {
@@ -188,6 +192,39 @@ class BaseTest {
                 			"type": "url"
                 		}]
                 	}
+                }
+            """.trimIndent()
+        )
+
+    internal fun telegramGetChatSuccessJson(): ResponseDefinitionBuilder =
+        WireMock.okJson(
+            """
+                {
+                    "ok": true,
+                    "result": {
+                        "id": -1001272838479,
+                        "title": "Trailer tracker",
+                        "username": "trailertracker",
+                        "type": "channel",
+                        "description": "Tracks trailers regularly. Owned by: @nandeeshkamath",
+                        "photo": {
+                            "small_file_id": "AQADBQAD7K4xG2A2mFcACAIAA7H2fN8W____VvdPsiMv0PkjBA",
+                            "small_file_unique_id": "AQAD7K4xG2A2mFcAAQ",
+                            "big_file_id": "AQADBQAD7K4xG2A2mFcACAMAA7H2fN8W____VvdPsiMv0PkjBA",
+                            "big_file_unique_id": "AQAD7K4xG2A2mFcB"
+                        }
+                    }
+                }
+            """.trimIndent()
+        )
+
+    internal fun telegramGetChatNotFoundJson(): ResponseDefinitionBuilder =
+        WireMock.status(400).withBody(
+            """
+                {
+                    "ok": false,
+                    "error_code": 400,
+                    "description": "Bad Request: chat not found"
                 }
             """.trimIndent()
         )
