@@ -18,6 +18,7 @@ object Util {
     fun await(fn: () -> Unit) = Awaitility.await().untilAsserted(fn)
 
     fun assertYoutubeSearchCall(count: Int = 1) = assertCall("/v3/search", RequestMethod.GET, count)
+    fun assertTelegramGetChannelInfo(count: Int = 1) = assertCall("/getChat", RequestMethod.GET, count)
     fun assertTelegramSendMessageCall(count: Int = 1) = assertCall("/sendMessage", RequestMethod.GET, count)
 
     fun assertCall(

@@ -1,4 +1,4 @@
-package com.youtube.tracker.models
+package com.youtube.tracker.models.response
 
 import java.time.OffsetDateTime
 
