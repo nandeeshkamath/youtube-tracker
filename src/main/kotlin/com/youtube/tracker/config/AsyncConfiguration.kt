@@ -16,13 +16,20 @@ class AsyncConfiguration {
 
     private fun createThreadPoolExecutor(): ThreadPoolTaskExecutor {
         val executor = ThreadPoolTaskExecutor()
-        executor.corePoolSize = 5
-        executor.maxPoolSize = 5
-        executor.setQueueCapacity(5)
-        executor.keepAliveSeconds = 30
+        executor.corePoolSize = poolSize
+        executor.maxPoolSize = maxPoolSize
+        executor.setQueueCapacity(queueCapacity)
+        executor.keepAliveSeconds = keepAliveSeconds
         executor.setWaitForTasksToCompleteOnShutdown(true)
         executor.setThreadNamePrefix("AYSNC-")
         executor.initialize()
         return executor
+    }
+
+    companion object {
+        private const val poolSize = 5
+        private const val maxPoolSize = 5
+        private const val queueCapacity = 5
+        private const val keepAliveSeconds = 30
     }
 }

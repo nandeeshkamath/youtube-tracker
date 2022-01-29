@@ -18,7 +18,8 @@ class TrackerControllerTest : BaseTest() {
             MockMvcRequestBuilders.post("/track")
                 .content(stubTrackerRequest())
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(basicAuth))
+                .with(basicAuth)
+        )
             .andExpect(MockMvcResultMatchers.status().isAccepted)
             .andReturn().response.contentAsString
 
@@ -35,7 +36,8 @@ class TrackerControllerTest : BaseTest() {
             MockMvcRequestBuilders.post("/track")
                 .content(stubTrackerRequest())
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(basicAuth))
+                .with(basicAuth)
+        )
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn().response.contentAsString
 

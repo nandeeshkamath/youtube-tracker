@@ -1,9 +1,8 @@
 package com.youtube.tracker.application
 
-import com.youtube.tracker.models.response.Item
-import com.youtube.tracker.models.YoutubeLink
-import com.youtube.tracker.models.response.YoutubeSearchResponse
 import com.youtube.tracker.models.request.TrackerRequest
+import com.youtube.tracker.models.response.Item
+import com.youtube.tracker.models.response.YoutubeSearchResponse
 import com.youtube.tracker.service.TelegramService
 import com.youtube.tracker.service.YoutubeService
 import com.youtube.tracker.util.Formatters.INSTANT_ISO_FORMATTER
@@ -53,7 +52,7 @@ class YoutubeTrackerApplication(
 
     internal fun List<Item>.generateLinks() =
         this.mapNotNull { item ->
-            item.id?.videoId?.let { videoId -> YoutubeLink(videoId) }?.get()
+            item.id?.videoId?.toYoutubeLink()
         }
 
     internal fun List<String>.send(targetChannel: String?) =
@@ -72,6 +71,8 @@ class YoutubeTrackerApplication(
         INSTANT_ISO_FORMATTER.format(
             Instant.now().minus(this.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
         )
+
+    internal fun String.toYoutubeLink() = "https://youtu.be/$this"
 
     companion object {
         private val log = loggerFor(YoutubeTrackerApplication::class)

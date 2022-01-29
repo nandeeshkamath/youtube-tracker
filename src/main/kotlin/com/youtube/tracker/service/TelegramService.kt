@@ -1,4 +1,5 @@
 package com.youtube.tracker.service
+
 import com.youtube.tracker.feign.TelegramFeign
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -12,9 +13,5 @@ class TelegramService(
     fun sendMessage(message: String, targetChannel: String?) {
         val finalTargetChannel = targetChannel ?: defaultTargetChannel
         feign.sendMessageToChannel(finalTargetChannel, message)
-    }
-
-    companion object {
-        private const val CHAT_NOT_FOUND = "Bad Request: chat not found"
     }
 }
