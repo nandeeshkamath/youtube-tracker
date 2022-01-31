@@ -64,9 +64,6 @@ class YoutubeTrackerApplication(
             )
         }
 
-    internal fun TrackerRequest.concatenateKeywords(separator: String = " ") =
-        this.keywords.joinToString { separator }
-
     internal fun TrackerRequest.publishedAfter() =
         INSTANT_ISO_FORMATTER.format(
             Instant.now().minus(this.interval ?: defaultTimeInterval, ChronoUnit.HOURS)
