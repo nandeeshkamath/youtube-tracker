@@ -10,4 +10,7 @@ data class TrackerRequest (
     val resultType: ResultType = ResultType.VIDEO,
     val channels: Set<String> = emptySet(),
     val targetChannel: String?,
-)
+) {
+    fun concatenateKeywords(separator: String = " ") =
+        this.keywords.joinToString(separator)
+}
