@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.youtube'
-version = '0.0.3'
+version = '0.0.3-bugfix'
 sourceCompatibility = '11'
 
 configurations {
@@ -41,6 +41,7 @@ dependencies {
 	testImplementation 'com.github.tomakehurst:wiremock:2.27.2'
 	testImplementation 'org.awaitility:awaitility:4.1.1'
 	testImplementation 'org.skyscreamer:jsonassert:1.5.0'
+	testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
 }
 
 dependencyManagement {
