@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11-openj9:latest
 
 RUN mkdir /opt/app
-COPY build/libs/tracker-0.0.2-bugfix.jar /opt/app
+COPY build/libs/tracker-0.0.3-bugfix.jar /opt/app
 
-CMD ["java", "-jar", "/opt/app/tracker-0.0.2-bugfix.jar"]
+CMD ["java", "-jar", "/opt/app/tracker-0.0.3-bugfix.jar"]
