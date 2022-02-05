@@ -7,7 +7,18 @@ import org.junit.jupiter.api.Test
 class TrackerRequestTest {
 
     @Test
-    fun `given stub request when keywords concatenated then keywords separated by space`() {
+    fun `given stub request when single keyword concatenated then no change`() {
+        val keyword = "trailer"
+        val keywordsConcatenated = stubRequest
+            .copy(
+                keywords = setOf(keyword)
+            )
+            .concatenateKeywords()
+        Assertions.assertEquals(keyword, keywordsConcatenated)
+    }
+
+    @Test
+    fun `given stub request when multiple keywords concatenated then keywords separated by space`() {
         val keywordsConcatenated = stubRequest.concatenateKeywords()
         Assertions.assertEquals("trailer teaser", keywordsConcatenated)
     }

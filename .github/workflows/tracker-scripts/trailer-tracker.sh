@@ -27,8 +27,7 @@ curl --location --request POST "$DOMAIN_URL/track" \
 --header 'Content-Type: application/json' \
 --data-raw "{
     \"keywords\": [
-      \"trailer\",
-      \"teaser\"
+      \"trailer\"
     ],
     \"interval\": 4,
     \"channels\": [
