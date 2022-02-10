@@ -22,18 +22,17 @@ class YoutubeTrackerApplication(
 ) {
     @Async("asyncExecutor")
     fun track(request: TrackerRequest) {
-        val keywords = request.concatenateKeywords()
         val publishedAfter = request.publishedAfter()
 
         request.channels.forEach { channel ->
             val searchResults = youtubeService.search(
                 channel = channel,
-                keywords = keywords,
+                keyword = request.keyword.core,
                 publishedAfter = publishedAfter,
                 resultType = request.resultType
             )
             searchResults
-                .filterByKeyword(request.keywords)
+                .filterByKeyword(request.keyword.all)
                 .generateLinks()
                 .send(request.targetChannel)
         }

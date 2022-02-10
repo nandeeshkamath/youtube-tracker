@@ -51,11 +51,13 @@ class BaseTest {
     internal fun stubTrackerRequest() =
         """
             {
-              "keywords": [
-                "trailer",
-                "teaser",
-                "first look"
-              ],
+              "keyword": {
+                "core": "trailer",
+                "extras": [
+                  "teaser",
+                  "first look"
+                ]
+              },
               "interval": 72,
               "targetChannel": "@trailertracker",
               "channels": [
