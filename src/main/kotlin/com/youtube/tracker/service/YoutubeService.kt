@@ -15,11 +15,11 @@ class YoutubeService(
     fun search(
         part: PartType = PartType.SNIPPET,
         channel: String,
-        keywords: String,
+        keyword: String,
         publishedAfter: String,
         resultType: ResultType
     ) = feign.search(
-        keyword = keywords,
+        keyword = keyword,
         channelId = channel,
         part = part.value,
         key = apiKey,

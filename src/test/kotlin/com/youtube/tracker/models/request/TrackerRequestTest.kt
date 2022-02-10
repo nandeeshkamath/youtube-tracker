@@ -7,25 +7,28 @@ import org.junit.jupiter.api.Test
 class TrackerRequestTest {
 
     @Test
-    fun `given stub request when single keyword concatenated then no change`() {
+    fun `given request with only core keyword when fetched all keywords then set contains only core keyword`() {
         val keyword = "trailer"
-        val keywordsConcatenated = stubRequest
+        val request = stubRequest
             .copy(
-                keywords = setOf(keyword)
+                keyword = Keyword(
+                    core = keyword
+                )
             )
-            .concatenateKeywords()
-        Assertions.assertEquals(keyword, keywordsConcatenated)
+        Assertions.assertEquals(setOf(keyword), request.keyword.all)
     }
 
     @Test
-    fun `given stub request when multiple keywords concatenated then keywords separated by space`() {
-        val keywordsConcatenated = stubRequest.concatenateKeywords()
-        Assertions.assertEquals("trailer teaser", keywordsConcatenated)
+    fun `given request with core and extra keywords when fetched all keywords then contains both core and extra`() {
+        Assertions.assertEquals(setOf("trailer", "teaser"), stubRequest.keyword.all)
     }
 
     companion object {
         private val stubRequest = TrackerRequest(
-            keywords = setOf("trailer", "teaser"),
+            keyword = Keyword(
+                core = "trailer",
+                extras = setOf("teaser")
+            ),
             interval = 2,
             resultType = ResultType.VIDEO,
             channels = setOf("channel1", "channel2"),
